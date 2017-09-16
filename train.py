@@ -12,7 +12,7 @@ import config
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', help='Path to data dir')
-    parser.add_argument('--model', type=str, required=True, help='Base model architecture', choices=[
+    parser.add_argument('--model', type=str, help='Base model architecture', choices=[
         config.MODEL_RESNET50,
         config.MODEL_RESNET152,
         config.MODEL_INCEPTION_V3,
@@ -49,9 +49,9 @@ if __name__ == '__main__':
             config.set_paths()
         if args.model:
             config.model = args.model
-
-        init()
-        train(args.nb_epoch, args.freeze_layers_number)
+        print(args)
+        # init()
+        # train(args.nb_epoch, args.freeze_layers_number)
     except Exception as e:
         print(e)
         traceback.print_exc()
