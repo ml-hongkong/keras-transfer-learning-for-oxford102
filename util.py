@@ -8,7 +8,8 @@ import itertools
 import importlib
 import matplotlib
 
-matplotlib.use('TkAgg')  # fixes issue if no GUI provided
+matplotlib.use('Agg')  # fixes issue if no GUI provided
+
 import matplotlib.pyplot as plt
 
 import seaborn as sns
@@ -106,7 +107,7 @@ def set_samples_info():
     """Walks through the train and valid directories
     and returns number of images"""
     white_list_formats = {'png', 'jpg', 'jpeg', 'bmp'}
-    dirs_info = {config.train_dir: 0, config.validation_dir: 0}
+    dirs_info = {config.train_dir: 0, config.validation_dir: 0, config.test_dir: 0}
     for d in dirs_info:
         iglob_iter = glob.iglob(d + '**/*.*')
         for i in iglob_iter:
@@ -116,6 +117,7 @@ def set_samples_info():
 
     config.nb_train_samples = dirs_info[config.train_dir]
     config.nb_validation_samples = dirs_info[config.validation_dir]
+    config.nb_test_samples = dirs_info[config.test_dir]
 
 
 def get_class_weight(d):
