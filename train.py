@@ -1,13 +1,14 @@
-import numpy as np
+from __future__ import print_function
+
+import os
 import argparse
 import traceback
-import os
-
-np.random.seed(1337)  # for reproducibility
+import numpy as np
 
 import util
 import config
 
+np.random.seed(1337)  # for reproducibility
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -18,7 +19,8 @@ def parse_args():
         config.MODEL_INCEPTION_V3,
         config.MODEL_VGG16])
     parser.add_argument('--nb_epoch', type=int, default=1000)
-    parser.add_argument('--freeze_layers_number', type=int, help='will freeze the first N layers and unfreeze the rest')
+    parser.add_argument('--freeze_layers_number',
+                        type=int, help='will freeze the first N layers and unfreeze the rest')
     return parser.parse_args()
 
 
@@ -49,9 +51,10 @@ if __name__ == '__main__':
             config.set_paths()
         if args.model:
             config.model = args.model
-        print(args)
-        # init()
-        # train(args.nb_epoch, args.freeze_layers_number)
+
+        init()
+        train(args.nb_epoch, args.freeze_layers_number)
+
     except Exception as e:
         print(e)
         traceback.print_exc()

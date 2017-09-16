@@ -1,22 +1,25 @@
+from __future__ import print_function
+
+import os
+import glob
+import math
+import itertools
+
+import importlib
 import matplotlib
 
-matplotlib.use('Agg')  # fixes issue if no GUI provided
+matplotlib.use('TkAgg')  # fixes issue if no GUI provided
 import matplotlib.pyplot as plt
 
 import seaborn as sns
-
-sns.set(style='white')
-
 import numpy as np
-import os
-import glob
 import pandas as pd
-import importlib
 import keras
 from keras import backend as K
+from keras.preprocessing.image import DirectoryIterator
 import config
-import math
-import itertools
+
+sns.set(style='white')
 
 
 def save_history(history, prefix):
@@ -107,7 +110,7 @@ def set_samples_info():
     for d in dirs_info:
         iglob_iter = glob.iglob(d + '**/*.*')
         for i in iglob_iter:
-            filename, file_extension = os.path.splitext(i)
+            _, file_extension = os.path.splitext(i)
             if file_extension[1:] in white_list_formats:
                 dirs_info[d] += 1
 
@@ -150,8 +153,6 @@ def set_classes_from_train_dir():
 def override_keras_directory_iterator_next():
     """Overrides .next method of DirectoryIterator in Keras
       to reorder color channels for images from RGB to BGR"""
-    from keras.preprocessing.image import DirectoryIterator
-
     original_next = DirectoryIterator.next
 
     # do not allow to override one more time
@@ -192,8 +193,8 @@ def save_activations(model, inputs, files, layer, batch_number):
     all_activations = []
     ids = []
     af = get_activation_function(model, layer)
-    for i in range(len(inputs)):
-        acts = get_activations(af, [inputs[i]])
+    for i, inp in enumerate(inputs):
+        acts = get_activations(af, [inp])
         all_activations.append(acts)
         ids.append(files[i].split('/')[-2])
 
